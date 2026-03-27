@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { SignInButton, UserButton, useAuth } from "@clerk/nextjs";
 
 interface NavLink {
   href: string;
@@ -12,6 +13,7 @@ interface NavLink {
 const NAV_LINKS: NavLink[] = [
   { href: "/tools/bottleneck", label: "Bottleneck", available: true },
   { href: "/tools/fps-calculator", label: "FPS Check", available: true },
+  { href: "/results", label: "My Results", available: true },
   { href: "/tools/psu-calculator", label: "PSU Calc", available: false },
 ];
 
@@ -20,6 +22,7 @@ const NAV_LINKS: NavLink[] = [
  */
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { isSignedIn, isLoaded } = useAuth();
 
   const desktopLink = (link: NavLink) => {
     if (!link.available) {
@@ -71,6 +74,11 @@ export default function Navbar() {
         {/* Desktop nav */}
         <nav className="hidden sm:flex items-center gap-6 text-sm">
           {NAV_LINKS.map(desktopLink)}
+          {isLoaded && (
+            isSignedIn
+              ? <UserButton afterSignOutUrl="/" />
+              : <SignInButton mode="redirect"><span className="text-muted hover:text-foreground transition-colors cursor-pointer">Sign in</span></SignInButton>
+          )}
         </nav>
 
         {/* Mobile hamburger */}

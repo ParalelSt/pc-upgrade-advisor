@@ -24,6 +24,11 @@ export interface GpuEntry {
  * @public
  */
 export const GPUS: GpuEntry[] = [
+  // NVIDIA — GTX 900 series (still in use)
+  { id: "gtx-970",   name: "NVIDIA GTX 970",    score: 19, tdp: 145 },
+  { id: "gtx-980",   name: "NVIDIA GTX 980",    score: 22, tdp: 165 },
+  { id: "gtx-980ti", name: "NVIDIA GTX 980 Ti", score: 28, tdp: 250 },
+
   // NVIDIA — GTX 10 series
   { id: "gtx-1050ti", name: "NVIDIA GTX 1050 Ti", score: 14, tdp: 75 },
   { id: "gtx-1060-6gb", name: "NVIDIA GTX 1060 6GB", score: 21, tdp: 120 },
@@ -39,14 +44,18 @@ export const GPUS: GpuEntry[] = [
   { id: "gtx-1660ti", name: "NVIDIA GTX 1660 Ti", score: 34, tdp: 120 },
 
   // NVIDIA — RTX 20 series
-  { id: "rtx-2060", name: "NVIDIA RTX 2060", score: 39, tdp: 160 },
+  { id: "rtx-2060",  name: "NVIDIA RTX 2060",       score: 39, tdp: 160 },
   { id: "rtx-2060s", name: "NVIDIA RTX 2060 Super", score: 44, tdp: 175 },
+  { id: "rtx-2070",  name: "NVIDIA RTX 2070",       score: 47, tdp: 185 },
   { id: "rtx-2070s", name: "NVIDIA RTX 2070 Super", score: 50, tdp: 215 },
+  { id: "rtx-2080",  name: "NVIDIA RTX 2080",       score: 53, tdp: 215 },
   { id: "rtx-2080s", name: "NVIDIA RTX 2080 Super", score: 55, tdp: 250 },
-  { id: "rtx-2080ti", name: "NVIDIA RTX 2080 Ti", score: 63, tdp: 250 },
+  { id: "rtx-2080ti","NVIDIA RTX 2080 Ti",           score: 63, tdp: 250 },
 
   // NVIDIA — RTX 30 series
-  { id: "rtx-3060", name: "NVIDIA RTX 3060", score: 50, tdp: 170 },
+  { id: "rtx-3050",    name: "NVIDIA RTX 3050",    score: 40, tdp: 130 },
+  { id: "rtx-3050-6gb","NVIDIA RTX 3050 6GB",       score: 35, tdp: 100 },
+  { id: "rtx-3060",    name: "NVIDIA RTX 3060",    score: 50, tdp: 170 },
   { id: "rtx-3060ti", name: "NVIDIA RTX 3060 Ti", score: 59, tdp: 200 },
   { id: "rtx-3070", name: "NVIDIA RTX 3070", score: 65, tdp: 220 },
   { id: "rtx-3070ti", name: "NVIDIA RTX 3070 Ti", score: 70, tdp: 290 },
@@ -67,11 +76,19 @@ export const GPUS: GpuEntry[] = [
   { id: "rtx-4090", name: "NVIDIA RTX 4090", score: 100, tdp: 450 },
 
   // NVIDIA — RTX 50 series (Blackwell)
+  { id: "rtx-5060",   name: "NVIDIA RTX 5060",    score: 68, tdp: 150 },
+  { id: "rtx-5060ti", name: "NVIDIA RTX 5060 Ti", score: 82, tdp: 180 },
   // roughly 4070 Ti Super class
   { id: "rtx-5070", name: "NVIDIA RTX 5070", score: 88, tdp: 250 },
   { id: "rtx-5070ti", name: "NVIDIA RTX 5070 Ti", score: 103, tdp: 300 },
   { id: "rtx-5080", name: "NVIDIA RTX 5080", score: 113, tdp: 360 },
   { id: "rtx-5090", name: "NVIDIA RTX 5090", score: 135, tdp: 575 },
+
+  // AMD — RX 5000 series (still common)
+  { id: "rx-5500xt", name: "AMD RX 5500 XT", score: 33, tdp: 130 },
+  { id: "rx-5600xt", name: "AMD RX 5600 XT", score: 44, tdp: 150 },
+  { id: "rx-5700",   name: "AMD RX 5700",    score: 47, tdp: 180 },
+  { id: "rx-5700xt", name: "AMD RX 5700 XT", score: 54, tdp: 225 },
 
   // AMD — RX 6000 series
   { id: "rx-6400", name: "AMD RX 6400", score: 24, tdp: 53 },
@@ -79,6 +96,7 @@ export const GPUS: GpuEntry[] = [
   { id: "rx-6600", name: "AMD RX 6600", score: 46, tdp: 132 },
   { id: "rx-6600xt", name: "AMD RX 6600 XT", score: 52, tdp: 160 },
   { id: "rx-6650xt", name: "AMD RX 6650 XT", score: 55, tdp: 180 },
+  { id: "rx-6700",   name: "AMD RX 6700",    score: 57, tdp: 175 },
   { id: "rx-6700xt", name: "AMD RX 6700 XT", score: 61, tdp: 230 },
   { id: "rx-6750xt", name: "AMD RX 6750 XT", score: 64, tdp: 250 },
   { id: "rx-6800", name: "AMD RX 6800", score: 70, tdp: 250 },
@@ -100,10 +118,12 @@ export const GPUS: GpuEntry[] = [
   { id: "rx-9070", name: "AMD RX 9070", score: 88, tdp: 220 },
   { id: "rx-9070xt", name: "AMD RX 9070 XT", score: 97, tdp: 304 },
 
-  // Intel — Arc
+  // Intel — Arc Alchemist
   { id: "arc-a580", name: "Intel Arc A580", score: 44, tdp: 185 },
   { id: "arc-a750", name: "Intel Arc A750", score: 50, tdp: 225 },
   { id: "arc-a770", name: "Intel Arc A770", score: 56, tdp: 225 },
-  // Battlemage — strong value
+  // Intel — Arc Battlemage
+  { id: "arc-b570", name: "Intel Arc B570", score: 55, tdp: 150 },
   { id: "arc-b580", name: "Intel Arc B580", score: 63, tdp: 190 },
+  { id: "arc-b770", name: "Intel Arc B770", score: 72, tdp: 228 },
 ];

@@ -7,7 +7,9 @@ import type { Resolution, FpsTarget } from "@/lib/bottleneck";
 import Select from "@/components/ui/Select";
 import Card from "@/components/ui/Card";
 import BottleneckResultCard from "@/components/ui/BottleneckResult";
+import SaveResultButton from "@/components/ui/SaveResultButton";
 import DonationSection from "@/components/ui/DonationSection";
+import SetupBar from "@/components/ui/SetupBar";
 
 interface Props {
   cpus: CpuEntry[];
@@ -59,16 +61,40 @@ export default function BottleneckTool({ cpus, gpus }: Props) {
 
   const isReady = selectedCpuId !== "" && selectedGpuId !== "";
 
+  const selectedCpu = cpus.find((c) => c.id === selectedCpuId);
+  const selectedGpu = gpus.find((g) => g.id === selectedGpuId);
+
+  const saveLabel = selectedCpu && selectedGpu
+    ? `${selectedCpu.name} + ${selectedGpu.name}`
+    : "";
+
+  const saveData = hasResult ? {
+    cpuId: selectedCpuId,
+    gpuId: selectedGpuId,
+    cpuName: selectedCpu?.name,
+    gpuName: selectedGpu?.name,
+    resolution,
+    fpsTarget,
+    percentage: result.percentage,
+    limitedBy: result.limitedBy,
+    severity,
+  } : {};
+
   const resultSection = hasResult ? (
-    <BottleneckResultCard
-      result={result}
-      severity={severity}
-      recommendation={recommendation}
-      effectiveCpuScore={effectiveCpuScore}
-      effectiveGpuScore={effectiveGpuScore}
-      resolution={resolution}
-      fpsTarget={fpsTarget}
-    />
+    <div className="flex flex-col gap-2">
+      <BottleneckResultCard
+        result={result}
+        severity={severity}
+        recommendation={recommendation}
+        effectiveCpuScore={effectiveCpuScore}
+        effectiveGpuScore={effectiveGpuScore}
+        resolution={resolution}
+        fpsTarget={fpsTarget}
+      />
+      <div className="flex justify-end">
+        <SaveResultButton type="bottleneck" label={saveLabel} data={saveData} />
+      </div>
+    </div>
   ) : null;
 
   const waitingMessage = !isReady ? (
@@ -81,6 +107,13 @@ export default function BottleneckTool({ cpus, gpus }: Props) {
     <div className="flex flex-col gap-8">
       <Card>
         <div className="flex flex-col gap-6">
+          <SetupBar
+            cpuId={selectedCpuId}
+            gpuId={selectedGpuId}
+            cpuName={selectedCpu?.name ?? ""}
+            gpuName={selectedGpu?.name ?? ""}
+            onLoad={(cid, gid) => { setCpuId(cid); setGpuId(gid); }}
+          />
           <Select
             label="CPU"
             options={cpuOptions}
