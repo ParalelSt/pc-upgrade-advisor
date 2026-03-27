@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { CPUS, type CpuEntry } from "@/data/cpus";
-import { GPUS, type GpuEntry } from "@/data/gpus";
+import type { CpuEntry } from "@/data/cpus";
+import type { GpuEntry } from "@/data/gpus";
 import {
   applyContextModifiers,
   calculateBottleneck,
@@ -31,24 +31,29 @@ interface BottleneckState {
   setFpsTarget: (fps: FpsTarget) => void;
 }
 
+interface BottleneckProps {
+  cpus: CpuEntry[];
+  gpus: GpuEntry[];
+}
+
 /**
  * Manages CPU/GPU/resolution/FPS selection and derives bottleneck analysis on the fly.
  * All calculation logic lives in lib/bottleneck.ts.
  */
-export function useBottleneck(): BottleneckState {
+export function useBottleneck({ cpus, gpus }: BottleneckProps): BottleneckState {
   const [selectedCpuId, setCpuId] = useState<string>("");
   const [selectedGpuId, setGpuId] = useState<string>("");
   const [resolution, setResolution] = useState<Resolution>("1440p");
   const [fpsTarget, setFpsTarget] = useState<FpsTarget>("144");
 
   const selectedCpu = useMemo(
-    () => CPUS.find((c) => c.id === selectedCpuId),
-    [selectedCpuId],
+    () => cpus.find((c) => c.id === selectedCpuId),
+    [cpus, selectedCpuId],
   );
 
   const selectedGpu = useMemo(
-    () => GPUS.find((g) => g.id === selectedGpuId),
-    [selectedGpuId],
+    () => gpus.find((g) => g.id === selectedGpuId),
+    [gpus, selectedGpuId],
   );
 
   const adjustedScores = useMemo(() => {

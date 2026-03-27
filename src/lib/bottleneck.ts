@@ -119,6 +119,12 @@ export function getUpgradeRecommendation(
     return `Your CPU and GPU are well-matched at ${resolution} / ${fpsTarget}fps. You have a balanced build.`;
   }
 
+  // Minor bottleneck — real but unlikely to be noticeable in practice
+  if (result.percentage < 10) {
+    const weaker = result.limitedBy === "cpu" ? cpuName : gpuName;
+    return `Your ${weaker} is slightly behind at ${resolution} / ${fpsTarget}fps, but at ${result.percentage}% the difference is too small to notice in most games. You don't need to upgrade either component right now.`;
+  }
+
   if (result.limitedBy === "cpu") {
     const hint = fpsTarget === "240"
       ? " At 240fps, the CPU has to process far more frames per second, amplifying this gap."

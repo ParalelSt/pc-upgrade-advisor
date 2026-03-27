@@ -25,7 +25,7 @@ const TOOLS: ToolCard[] = [
     title: "FPS Estimator",
     description: "Estimate in-game FPS for popular titles based on your hardware.",
     href: "/tools/fps-calculator",
-    available: false,
+    available: true,
   },
   {
     title: "Game Requirements",

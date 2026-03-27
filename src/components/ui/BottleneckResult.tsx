@@ -66,12 +66,12 @@ export default function BottleneckResultCard({
       <div className="-mx-6 -mt-6 mb-6 h-px bg-gradient-to-r from-violet-500 via-blue-400 to-cyan-400" />
 
       <div className="flex flex-col gap-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1">
           <div className="flex flex-col gap-0.5">
             <h2 className="text-lg font-semibold text-foreground">Analysis Result</h2>
             <span className="text-xs text-muted">{resolution} · {fpsTarget}fps target</span>
           </div>
-          <span className={`text-sm font-medium ${severityColor}`}>{severityLabel}</span>
+          <span className={`text-sm font-medium shrink-0 pt-0.5 ${severityColor}`}>{severityLabel}</span>
         </div>
 
         <div className="flex flex-col gap-2">
@@ -91,12 +91,12 @@ export default function BottleneckResultCard({
 
         <div className="grid grid-cols-2 gap-4">
           <ScoreBar
-            label="CPU Effective Score"
+            label="CPU Score"
             score={displayCpu}
             isLimiting={result.limitedBy === "cpu"}
           />
           <ScoreBar
-            label="GPU Effective Score"
+            label="GPU Score"
             score={displayGpu}
             isLimiting={result.limitedBy === "gpu"}
           />
