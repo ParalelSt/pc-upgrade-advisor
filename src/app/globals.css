@@ -1,26 +1,71 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0d0d0f;
+  --foreground: #ededed;
+  --surface: #141416;
+  --surface-raised: #1a1a1e;
+  --border: #2a2a30;
+  --accent: #6366f1;
+  --accent-hover: #818cf8;
+  --muted: #71717a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-muted: var(--muted);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Subtle ambient glow in the top-left — purely decorative */
+body::before {
+  content: '';
+  position: fixed;
+  top: -30%;
+  left: -15%;
+  width: 55%;
+  height: 70%;
+  background: radial-gradient(ellipse, rgba(99, 102, 241, 0.07) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  bottom: -20%;
+  right: -10%;
+  width: 40%;
+  height: 50%;
+  background: radial-gradient(ellipse, rgba(34, 211, 238, 0.05) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes rgb-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Animated gradient text — use on headings and logo */
+.text-gradient {
+  background: linear-gradient(90deg, #a78bfa, #818cf8, #38bdf8, #34d399, #818cf8, #a78bfa);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: rgb-shift 6s linear infinite;
 }
