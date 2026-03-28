@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "@clerk/nextjs";
-import type { SavedSetup } from "@/lib/setupActions";
-import { saveSetup, getSavedSetups } from "@/lib/setupActions";
+import { saveSetup } from "@/lib/setupActions";
+import { useSetups } from "@/lib/setupContext";
 import Button from "./Button";
 
 interface Props {
@@ -18,26 +18,12 @@ interface Props {
  * Compact bar rendered above the CPU/GPU selects.
  * - Lets signed-in users load a previously saved setup (pre-fills CPU + GPU).
  * - Lets signed-in users save the current CPU+GPU selection as a new setup.
- * Fetches its own setups client-side so the tool pages stay statically cacheable.
+ * Uses shared SetupContext for global state across the app.
  */
 export default function SetupBar({ cpuId, gpuId, cpuName, gpuName, onLoad }: Props) {
   const { isSignedIn, isLoaded } = useAuth();
-  const [localSetups, setLocalSetups] = useState<SavedSetup[]>([]);
-  const [setupsLoading, setSetupsLoading] = useState(false);
+  const { setups: localSetups, loading: setupsLoading, addSetup } = useSetups();
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
-
-  useEffect(() => {
-    if (isSignedIn) {
-      setSetupsLoading(true);
-      getSavedSetups()
-        .then(setLocalSetups)
-        .catch((err) => {
-          console.error("Failed to load setups:", err);
-          setLocalSetups([]);
-        })
-        .finally(() => setSetupsLoading(false));
-    }
-  }, [isSignedIn]);
 
   if (!isLoaded) return null;
 
@@ -63,10 +49,13 @@ export default function SetupBar({ cpuId, gpuId, cpuName, gpuName, onLoad }: Pro
     setSaveStatus("saving");
     const id = await saveSetup(name, cpuId, gpuId);
     if (id) {
-      setLocalSetups((prev) => [
-        { id, name, cpuId, gpuId, createdAt: new Date().toISOString() },
-        ...prev,
-      ]);
+      addSetup({
+        id,
+        name,
+        cpuId,
+        gpuId,
+        createdAt: new Date().toISOString(),
+      });
       setSaveStatus("saved");
       setTimeout(() => setSaveStatus("idle"), 2000);
     } else {

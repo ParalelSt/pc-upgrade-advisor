@@ -1,25 +1,32 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import type { SavedSetup } from "@/lib/setupActions";
+import { useTransition } from "react";
 import { deleteSetup } from "@/lib/setupActions";
+import { useSetups } from "@/lib/setupContext";
 import Button from "./Button";
+import Card from "./Card";
 
-interface Props {
-  setups: SavedSetup[];
-}
-
-export default function SetupsList({ setups: initial }: Props) {
-  const [setups, setSetups] = useState(initial);
+export default function SetupsList() {
+  const { setups, removeSetup } = useSetups();
   const [, startTransition] = useTransition();
 
   const handleDelete = (id: string) => {
     if (!confirm("Delete this setup? This can't be undone.")) return;
-    setSetups((prev) => prev.filter((s) => s.id !== id));
+    removeSetup(id);
     startTransition(() => {
       deleteSetup(id);
     });
   };
+
+  if (setups.length === 0) {
+    return (
+      <Card>
+        <p className="text-sm text-muted text-center py-6">
+          No saved setups yet. Select a CPU and GPU in any tool and hit &ldquo;Save setup&rdquo;.
+        </p>
+      </Card>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-2">

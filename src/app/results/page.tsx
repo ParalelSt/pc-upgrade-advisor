@@ -1,12 +1,11 @@
 import { getSavedResults } from "@/lib/resultActions";
-import { getSavedSetups } from "@/lib/setupActions";
 import Navbar from "@/components/layout/Navbar";
 import Card from "@/components/ui/Card";
 import ResultsList from "@/components/ui/ResultsList";
 import SetupsList from "@/components/ui/SetupsList";
 
 export default async function ResultsPage() {
-  const [results, setups] = await Promise.all([getSavedResults(), getSavedSetups()]);
+  const results = await getSavedResults();
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -21,15 +20,7 @@ export default async function ResultsPage() {
             </h1>
             <p className="text-sm text-muted">Saved CPU + GPU combos you can load instantly in any tool.</p>
           </div>
-          {setups.length === 0 ? (
-            <Card>
-              <p className="text-sm text-muted text-center py-6">
-                No saved setups yet. Select a CPU and GPU in any tool and hit &ldquo;Save setup&rdquo;.
-              </p>
-            </Card>
-          ) : (
-            <SetupsList setups={setups} />
-          )}
+          <SetupsList />
         </section>
 
         {/* Results */}
