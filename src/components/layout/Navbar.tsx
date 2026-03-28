@@ -76,7 +76,7 @@ export default function Navbar() {
           {NAV_LINKS.map(desktopLink)}
           {isLoaded && (
             isSignedIn
-              ? <UserButton afterSignOutUrl="/" />
+              ? <UserButton />
               : <SignInButton mode="redirect"><span className="text-muted hover:text-foreground transition-colors cursor-pointer">Sign in</span></SignInButton>
           )}
         </nav>

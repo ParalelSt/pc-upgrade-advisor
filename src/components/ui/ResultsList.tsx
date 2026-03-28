@@ -75,7 +75,7 @@ function ResultCard({ result, onDelete }: { result: SavedResult; onDelete: (id: 
 }
 
 function BottleneckSummary({ data }: { data: Record<string, unknown> }) {
-  const severity = data.severity as keyof typeof SEVERITY_COLOR | undefined;
+  const severity = data.severity as keyof typeof SEVERITY_COLORS | undefined;
   const percentage = data.percentage as number | undefined;
   const limitedBy = data.limitedBy as string | undefined;
   const resolution = data.resolution as string | undefined;
