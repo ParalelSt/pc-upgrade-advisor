@@ -3,27 +3,13 @@
 import { useState, useTransition } from "react";
 import type { SavedResult } from "@/lib/resultActions";
 import { deleteResult } from "@/lib/resultActions";
+import { SEVERITY_COLORS, FPS_LABEL_COLORS } from "@/lib/colors";
 import Card from "./Card";
 import Button from "./Button";
 
 interface Props {
   results: SavedResult[];
 }
-
-const SEVERITY_COLOR = {
-  none: "text-emerald-400",
-  minor: "text-yellow-400",
-  moderate: "text-orange-400",
-  severe: "text-red-400",
-} as const;
-
-const FPS_LABEL_COLOR = {
-  unplayable: "text-red-400",
-  playable: "text-orange-400",
-  smooth: "text-yellow-400",
-  high: "text-emerald-400",
-  ultra: "text-cyan-400",
-} as const;
 
 /**
  * Renders a list of saved results with delete capability.
@@ -33,6 +19,7 @@ export default function ResultsList({ results: initial }: Props) {
   const [, startTransition] = useTransition();
 
   const handleDelete = (id: string) => {
+    if (!confirm("Delete this result? This can't be undone.")) return;
     setResults((prev) => prev.filter((r) => r.id !== id));
     startTransition(() => {
       deleteResult(id);
@@ -94,7 +81,7 @@ function BottleneckSummary({ data }: { data: Record<string, unknown> }) {
   const resolution = data.resolution as string | undefined;
   const fpsTarget = data.fpsTarget as string | undefined;
 
-  const severityColor = severity ? SEVERITY_COLOR[severity] : "text-muted";
+  const severityColor = severity ? SEVERITY_COLORS[severity] : "text-muted";
 
   const limitLabel = (() => {
     if (!limitedBy || limitedBy === "none") return "Balanced";
@@ -143,7 +130,7 @@ function FpsSummary({ data }: { data: Record<string, unknown> }) {
       <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
         <div className="flex flex-col gap-0.5">
           <span className="text-xs text-muted">Avg FPS</span>
-          <span className={`font-mono font-semibold ${FPS_LABEL_COLOR[fpsLabel]}`}>{avgFps} fps</span>
+          <span className={`font-mono font-semibold ${FPS_LABEL_COLORS[fpsLabel]}`}>{avgFps} fps</span>
         </div>
         {resolution && (
           <div className="flex flex-col gap-0.5">

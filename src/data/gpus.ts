@@ -50,11 +50,11 @@ export const GPUS: GpuEntry[] = [
   { id: "rtx-2070s", name: "NVIDIA RTX 2070 Super", score: 50, tdp: 215 },
   { id: "rtx-2080",  name: "NVIDIA RTX 2080",       score: 53, tdp: 215 },
   { id: "rtx-2080s", name: "NVIDIA RTX 2080 Super", score: 55, tdp: 250 },
-  { id: "rtx-2080ti","NVIDIA RTX 2080 Ti",           score: 63, tdp: 250 },
+  { id: "rtx-2080ti", name: "NVIDIA RTX 2080 Ti",    score: 63, tdp: 250 },
 
   // NVIDIA — RTX 30 series
   { id: "rtx-3050",    name: "NVIDIA RTX 3050",    score: 40, tdp: 130 },
-  { id: "rtx-3050-6gb","NVIDIA RTX 3050 6GB",       score: 35, tdp: 100 },
+  { id: "rtx-3050-6gb", name: "NVIDIA RTX 3050 6GB", score: 35, tdp: 100 },
   { id: "rtx-3060",    name: "NVIDIA RTX 3060",    score: 50, tdp: 170 },
   { id: "rtx-3060ti", name: "NVIDIA RTX 3060 Ti", score: 59, tdp: 200 },
   { id: "rtx-3070", name: "NVIDIA RTX 3070", score: 65, tdp: 220 },

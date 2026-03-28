@@ -1,4 +1,5 @@
 import type { BottleneckResult, Resolution, FpsTarget } from "@/lib/bottleneck";
+import { SEVERITY_COLORS } from "@/lib/colors";
 import Card from "./Card";
 
 interface Props {
@@ -10,13 +11,6 @@ interface Props {
   resolution: Resolution;
   fpsTarget: FpsTarget;
 }
-
-const SEVERITY_COLOR = {
-  none: "text-emerald-400",
-  minor: "text-yellow-400",
-  moderate: "text-orange-400",
-  severe: "text-red-400",
-} as const;
 
 const SEVERITY_BAR_CLASS = {
   none: "bg-gradient-to-r from-emerald-500 to-teal-400",
@@ -46,7 +40,7 @@ export default function BottleneckResultCard({
   fpsTarget,
 }: Props) {
   const scoreBarWidth = `${result.percentage}%`;
-  const severityColor = SEVERITY_COLOR[severity];
+  const severityColor = SEVERITY_COLORS[severity];
   const severityBarClass = SEVERITY_BAR_CLASS[severity];
   const severityLabel = SEVERITY_LABEL[severity];
 

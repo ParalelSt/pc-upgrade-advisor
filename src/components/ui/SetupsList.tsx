@@ -14,6 +14,7 @@ export default function SetupsList({ setups: initial }: Props) {
   const [, startTransition] = useTransition();
 
   const handleDelete = (id: string) => {
+    if (!confirm("Delete this setup? This can't be undone.")) return;
     setSetups((prev) => prev.filter((s) => s.id !== id));
     startTransition(() => {
       deleteSetup(id);

@@ -23,11 +23,19 @@ interface Props {
 export default function SetupBar({ cpuId, gpuId, cpuName, gpuName, onLoad }: Props) {
   const { isSignedIn, isLoaded } = useAuth();
   const [localSetups, setLocalSetups] = useState<SavedSetup[]>([]);
+  const [setupsLoading, setSetupsLoading] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
 
   useEffect(() => {
     if (isSignedIn) {
-      getSavedSetups().then(setLocalSetups);
+      setSetupsLoading(true);
+      getSavedSetups()
+        .then(setLocalSetups)
+        .catch((err) => {
+          console.error("Failed to load setups:", err);
+          setLocalSetups([]);
+        })
+        .finally(() => setSetupsLoading(false));
     }
   }, [isSignedIn]);
 
@@ -82,7 +90,11 @@ export default function SetupBar({ cpuId, gpuId, cpuName, gpuName, onLoad }: Pro
 
   return (
     <div className="flex items-center gap-2 flex-wrap">
-      {localSetups.length > 0 && (
+      {setupsLoading && (
+        <p className="text-xs text-muted">Loading setups…</p>
+      )}
+
+      {!setupsLoading && localSetups.length > 0 && (
         <select
           className="flex-1 min-w-0 text-xs bg-surface border border-border/50 text-muted rounded-lg px-3 py-2 focus:outline-none focus:border-accent/50 transition-colors"
           defaultValue=""
@@ -110,7 +122,7 @@ export default function SetupBar({ cpuId, gpuId, cpuName, gpuName, onLoad }: Pro
         </Button>
       )}
 
-      {!canSave && localSetups.length === 0 && (
+      {!canSave && !setupsLoading && localSetups.length === 0 && (
         <p className="text-xs text-muted">Select a CPU and GPU to save your setup.</p>
       )}
     </div>
