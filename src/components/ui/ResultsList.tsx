@@ -6,6 +6,7 @@ import { deleteResult } from "@/lib/resultActions";
 import { SEVERITY_COLORS, FPS_LABEL_COLORS } from "@/lib/colors";
 import Card from "./Card";
 import Button from "./Button";
+import ConfirmDialog from "./ConfirmDialog";
 
 interface Props {
   results: SavedResult[];
@@ -16,22 +17,33 @@ interface Props {
  */
 export default function ResultsList({ results: initial }: Props) {
   const [results, setResults] = useState(initial);
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [, startTransition] = useTransition();
 
-  const handleDelete = (id: string) => {
-    if (!confirm("Delete this result? This can't be undone.")) return;
-    setResults((prev) => prev.filter((r) => r.id !== id));
+  const confirmDelete = () => {
+    if (!pendingDeleteId) return;
+    setResults((prev) => prev.filter((r) => r.id !== pendingDeleteId));
     startTransition(() => {
-      deleteResult(id);
+      deleteResult(pendingDeleteId);
     });
+    setPendingDeleteId(null);
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      {results.map((result) => (
-        <ResultCard key={result.id} result={result} onDelete={handleDelete} />
-      ))}
-    </div>
+    <>
+      <div className="flex flex-col gap-4">
+        {results.map((result) => (
+          <ResultCard key={result.id} result={result} onDelete={(id) => setPendingDeleteId(id)} />
+        ))}
+      </div>
+      <ConfirmDialog
+        open={pendingDeleteId !== null}
+        title="Delete result"
+        message="This will permanently delete this saved result. This can't be undone."
+        onConfirm={confirmDelete}
+        onCancel={() => setPendingDeleteId(null)}
+      />
+    </>
   );
 }
 

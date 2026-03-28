@@ -1,21 +1,24 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { deleteSetup } from "@/lib/setupActions";
 import { useSetups } from "@/lib/setupContext";
 import Button from "./Button";
 import Card from "./Card";
+import ConfirmDialog from "./ConfirmDialog";
 
 export default function SetupsList() {
   const { setups, removeSetup } = useSetups();
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
   const [, startTransition] = useTransition();
 
-  const handleDelete = (id: string) => {
-    if (!confirm("Delete this setup? This can't be undone.")) return;
-    removeSetup(id);
+  const confirmDelete = () => {
+    if (!pendingDeleteId) return;
+    removeSetup(pendingDeleteId);
     startTransition(() => {
-      deleteSetup(id);
+      deleteSetup(pendingDeleteId);
     });
+    setPendingDeleteId(null);
   };
 
   if (setups.length === 0) {
@@ -38,7 +41,7 @@ export default function SetupsList() {
           <span className="text-foreground font-medium truncate">{setup.name}</span>
           <Button
             variant="danger"
-            onClick={() => handleDelete(setup.id)}
+            onClick={() => setPendingDeleteId(setup.id)}
             className="shrink-0"
             aria-label={`Delete setup ${setup.name}`}
           >
@@ -46,6 +49,13 @@ export default function SetupsList() {
           </Button>
         </div>
       ))}
+      <ConfirmDialog
+        open={pendingDeleteId !== null}
+        title="Delete setup"
+        message="This will permanently delete this saved setup. This can't be undone."
+        onConfirm={confirmDelete}
+        onCancel={() => setPendingDeleteId(null)}
+      />
     </div>
   );
 }
